@@ -6,6 +6,8 @@ import wikipedia
 import pyjokes
 import googlesearch as gs
 import webbrowser
+
+from geopy.geocoders import Nominatim
 from AppOpener import open, close
 
 
@@ -66,15 +68,20 @@ def run_alexa():
         webbrowser.get('chrome').open_new_tab(f"www.{query}.com")
     elif "open" in command:
         app_name = command.replace("open ","")
-        open(app_name, match_closest=True)
-    else:
-        talk('please say the command again.')    
+        open(app_name, match_closest=True)    
           
-    '''elif "location" in command:
-        loc = location.Location()
-        loc.valid_fix
-        locpo=loc.position
-        print(loc.reverse(locpo))'''
+    elif "location" in command:
+        loc = Nominatim(user_agent="GetLoc")
+
+        # entering the location name
+        getLoc = loc.geocode(command)
+        print(getLoc.address)
+        print("Latitude = ", getLoc.latitude, "\n")
+        print("Longitude = ", getLoc.longitude)
+    else:
+        talk('please say the command again.')
+
+        
         
         
         
